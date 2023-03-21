@@ -17,6 +17,8 @@ def generate_tree(folder_path, relative_path=""):
         tree['type'] = 'folder'
         tree['name'] = os.path.basename(folder_path)
         tree['relative_path'] = relative_path
+        # Add folder_path to the tree structure
+        tree['folder_path'] = folder_path
         tree['files'] = []
         tree['subfolders'] = []
 
