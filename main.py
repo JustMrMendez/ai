@@ -10,3 +10,5 @@ import subprocess
 tree = generate_tree('test_folder')
 
 visualize_tree(tree)
+
+# get current workinf d

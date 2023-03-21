@@ -51,16 +51,21 @@ def generate_pyvis_data(tree, nt=None, parent_vertex=None, file_names=None, file
 
         # Check for duplicated file contents
         file_path = os.path.join(tree['folder_path'], file_info['name'])
-        with open(file_path, 'rb') as f:
-            file_hash = hashlib.md5(f.read()).hexdigest()
+        try:
+            with open(file_path, 'rb') as f:
+                file_hash = hashlib.md5(f.read()).hexdigest()
 
-        if file_hash in file_hashes:
-            file_color = 'blue'
-            file_size = 40
-            file_font_size = 18
-            file_hashes[file_hash].append(file_vertex_id)
-        else:
-            file_hashes[file_hash] = [file_vertex_id]
+            if file_hash in file_hashes:
+                file_color = 'blue'
+                file_size = 40
+                file_font_size = 18
+                file_hashes[file_hash].append(file_vertex_id)
+            else:
+                file_hashes[file_hash] = [file_vertex_id]
+        except FileNotFoundError:
+            with open('errored.txt', 'a') as error_file:
+                error_file.write(f"{file_path}\n")
+            continue
 
         nt.add_node(file_vertex_id, label=file_label, title=f"{file_label}\nLast modified: {last_modified}",
                     color=file_color, size=file_size, font=dict(size=file_font_size))
